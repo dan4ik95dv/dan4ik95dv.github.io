@@ -1,14 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Deeplink Android</title>
+    <title>deeplink</title>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="css/roboto.min.css" rel="stylesheet">
+    <link href="css/material.min.css" rel="stylesheet">
+    <link href="css/material-fullpalette.min.css" rel="stylesheet">
+    <link href="css/bootstrap.cyborg.min.css" rel="stylesheet">
+    <link href="css/ripples.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script type='text/javascript' src='js/jquery.min.js'></script>
+
+
+    <!--INIT UNITY-->
     <script type="text/javascript">
-       window.location = 'intent://@Intent;scheme=app://lcs.incom.im;package=team.rp.incom;S.browser_fallback_url=https://play.google.com/store/apps/details?id=team.rp.incom&referrer=rjVGiEoC9VkHCrXIWTkXY6FCc0gN0jFq6LSsQciCLuexIIc9q1eJpnzst1Zod8Vj'
+        <!--
+        var unityObjectUrl = "js/UnityObject2.js";
+        if (document.location.protocol == 'https:')
+            unityObjectUrl = unityObjectUrl.replace("http://", "https://ssl-");
+        document.write('<script type="text\/javascript" src="' + unityObjectUrl + '"><\/script>');
+        -->
     </script>
+
+    <script type="text/javascript">
+        var config = {
+            width: "100%",
+            height: "100%",
+            params: {
+                enableDebugging: "0",
+                backgroundcolor: "222222",
+                bordercolor: "222222",
+                textcolor: "FFFFFF"
+                /* logoimage: "MyLogo.png",
+                 progressbarimage: "MyProgressBar.png",
+                 progressframeimage: "MyProgressFrame.png"*/
+            },
+            disableContextMenu: true,
+            disableFullscreen: false,
+            disableExternalCall: false
+
+        };
+        var u = new UnityObject2(config);
+        jQuery(function () {
+            var $missingScreen = jQuery("#unityPlayer").find(".missing");
+            var $brokenScreen = jQuery("#unityPlayer").find(".broken");
+            $missingScreen.hide();
+            $brokenScreen.hide();
+
+            u.observeProgress(function (progress) {
+                switch (progress.pluginStatus) {
+                    case "broken":
+                        $brokenScreen.find("a").click(function (e) {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            u.installPlugin();
+                            return false;
+                        });
+                        $brokenScreen.show();
+                        break;
+                    case "missing":
+                        $missingScreen.find("a").click(function (e) {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            u.installPlugin();
+                            return false;
+                        });
+                        $missingScreen.show();
+                        break;
+                    case "installed":
+                        $missingScreen.remove();
+                        break;
+                    case "first":
+                        break;
+                }
+            });
+            u.initPlugin(jQuery("#unityPlayer")[0], "unity/unity.unity3d");
+        });
+    </script>
+
 </head>
+
 <body>
+
+
 <a href="intent://@Intent;scheme=app://lcs.incom.im;package=team.rp.incom;S.browser_fallback_url=https://play.google.com/store/apps/details?id=team.rp.incom&referrer=rjVGiEoC9VkHCrXIWTkXY6FCc0gN0jFq6LSsQciCLuexIIc9q1eJpnzst1Zod8Vj">Click here</a>
+
+
+<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/ripples.min.js"></script>
+<script src="js/material.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.material.init();
+    });
+</script>
+<script src="js/vendors/ace/src-noconflict/ace.js" type="text/javascript"></script>
+<script src="js/vendors/ace/src-noconflict/ext-beautify.js" type="text/javascript"></script>
+<script src="js/vendors/ace/src-noconflict/ext-statusbar.js" type="text/javascript"></script>
+<script src="js/vendors/ace/src-noconflict/ext-language_tools.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+
+
 </body>
 </html>
-
